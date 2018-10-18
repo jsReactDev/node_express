@@ -2,13 +2,18 @@
   "name": "expressJS",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Roman Borysenko",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.4",
+    "pg-promise": "^8.5.0"
   }
 }
