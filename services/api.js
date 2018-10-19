@@ -6,7 +6,7 @@ const pgp = require('pg-promise')(options);
 const connection = 'postgres://postgres@localhost:5432/e-commerce';
 const db = pgp(connection);
 
-function getList(req,res,next){
+function getProducts(req,res,next){
     db.any("SELECT * FROM public.products")
         .then(function(data){
             res.status(200)
@@ -20,7 +20,7 @@ function getList(req,res,next){
         });
 }
 
-function getOne(req,res,next){
+function getProduct(req,res,next){
     db.any("SELECT * FROM public.products where id='"+req.params.id+"'")
         .then(function(data){
             res.status(200)
@@ -34,7 +34,51 @@ function getOne(req,res,next){
         });
 }
 
+function createProduct(req,res,next){
+    db.none('insert into public.products(name) values(${name})',req.body)
+        .then(()=>{
+            res.status(200)
+                .json({
+                    status : 'success',
+                    message:'item add to products'
+                });
+        })
+        .catch((err)=>{
+            console.log(err);
+            return next(err);
+        });
+}
+function editProduct(req,res,next){
+    db.none("update public.products set name=${name} where id = '"+req.params.id+"'",req.body)
+        .then(()=>{
+            res.status(200)
+                .json({
+                    status:'success',
+                    message:'edit success product'
+                });
+        })
+        .catch((err)=>{
+            return next(err);
+        })
+}
+function deleteProduct(req,res,next){
+    db.none("delete from public.products where id = '"+req.params.id+"'")
+        .then(()=>{
+            res.status(200)
+                .json({
+                    status:'success',
+                    message:'delete success product'
+                });
+        })
+        .catch((err)=>{
+            return next(err);
+        })
+}
+
 module.exports = {
-    getList : getList,
-    getOne : getOne
+    getProducts : getProducts,
+    getProduct : getProduct,
+    createProduct: createProduct,
+    editProduct: editProduct,
+    deleteProduct: deleteProduct
 };
